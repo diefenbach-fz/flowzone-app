@@ -1,0 +1,4 @@
+include README.txt
+recursive-include flowzone_app/locale *
+recursive-include flowzone_app/static *
+recursive-include flowzone_app/templates *
