@@ -1,0 +1,5 @@
+<form method="post"
+      action="{% url lfs_invoice_customer customer_id %}">
+    {{ form.allow_invoice }} {{ form.allow_invoice.label }} <input type="submit" />
+    {% csrf_token %}
+</form>
