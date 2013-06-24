@@ -22,15 +22,12 @@ def invoice_customer(context, customer_id):
     return mark_safe(result)
 
 @register.simple_tag(takes_context=True)
-def ustore_link(context, product_id):
+def ustore_link(context, product_id, kind):
     request = context.get("request")
 
     try:
         product = Product.objects.get(pk=product_id)
     except Product.DoesNotExist:
-        return ""
-
-    if not product.external_id:
         return ""
 
     email = request.session.session_key + "@srz.de"
@@ -41,5 +38,15 @@ def ustore_link(context, product_id):
         user_id = ustore.add_user(email)
         ustore.add_user_to_group(user_id, getattr(settings, "USTORE_GROUP"))
 
-    url = ustore.get_single_signon_url_to_product_details(email, product.external_id)
+    url = ustore.get_single_signon_url_to_product_details(email, product, kind)
+    return mark_safe(url)
+
+@register.simple_tag(takes_context=True)
+def ustore_finalize_link(context, cart_item):
+    request = context.get("request")
+    email = request.session.session_key + "@srz.de"
+
+    ustore = UStore(request)
+    url = ustore.get_single_signon_url_to_finalize_page(email, cart_item)
+
     return mark_safe(url)

@@ -15,10 +15,5 @@ def submit_order_to_ustore(sender, **kwargs):
     request = sender.get("request")
 
     item = order.items.all()[0]
-
-    order_id, order_product_id = item.external_id.split("/")
-    order_id = order_id.strip()
-    order_product_id = order_product_id.strip()
-
     ustore = UStore(request)
-    ustore.submit_order(order_id)
+    ustore.submit_order(item.external_order_id)
