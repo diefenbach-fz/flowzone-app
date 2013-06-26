@@ -33,7 +33,7 @@ def ustore_link(context, product_id, kind):
     email = request.session.session_key + "@srz.de"
 
     # Create ustore user if necessary
-    ustore = UStore(request)
+    ustore = UStore()
     if ustore.get_user(email) is None:
         user_id = ustore.add_user(email)
         ustore.add_user_to_group(user_id, getattr(settings, "USTORE_GROUP"))
@@ -46,7 +46,7 @@ def ustore_finalize_link(context, cart_item):
     request = context.get("request")
     email = request.session.session_key + "@srz.de"
 
-    ustore = UStore(request)
+    ustore = UStore()
     url = ustore.get_single_signon_url_to_finalize_page(email, cart_item)
 
     return mark_safe(url)
